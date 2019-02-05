@@ -19,7 +19,7 @@ public class TubeCreateServlet extends HttpServlet {
     private final TubeService tubeService;
     private final ModelMapper modelMapper;
 
-
+    @Inject
     public TubeCreateServlet(TubeService tubeService, ModelMapper modelMapper) {
         this.tubeService = tubeService;
         this.modelMapper = modelMapper;
