@@ -10,6 +10,7 @@ import javax.inject.Inject;
 public class TubeServiceImpl implements TubeService {
 
     private final TubeRepository tubeRepository;
+    private final ModelMapper modelMapper;
 
     @Inject
     public TubeServiceImpl(TubeRepository tubeRepository, ModelMapper modelMapper) {
@@ -17,7 +18,6 @@ public class TubeServiceImpl implements TubeService {
         this.modelMapper = modelMapper;
     }
 
-    private final ModelMapper modelMapper;
 
     @Override
     public void saveTube(TubeServiceModel tubeServiceModel) {

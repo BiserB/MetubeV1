@@ -1,11 +1,13 @@
 package metube.web.servlets;
 
 
+import metube.domain.entities.Tube;
 import metube.domain.models.binding.TubeCreateBindingModel;
 import metube.domain.models.service.TubeServiceModel;
 import metube.service.TubeService;
 import metube.util.ModelMapper;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,27 +18,30 @@ import java.io.IOException;
 @WebServlet("/tubes/create")
 public class TubeCreateServlet extends HttpServlet {
 
-    private final TubeService tubeService;
-    private final ModelMapper modelMapper;
+    private final ModelMapper mapper;
+    private final TubeService service;
 
     @Inject
-    public TubeCreateServlet(TubeService tubeService, ModelMapper modelMapper) {
-        this.tubeService = tubeService;
-        this.modelMapper = modelMapper;
+    public TubeCreateServlet(ModelMapper mapper, TubeService service) {
+        this.mapper = mapper;
+        this.service = service;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.getRequestDispatcher("/jsps/create-tube.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         TubeCreateBindingModel tubeCreateBindingModel = (TubeCreateBindingModel) req
                 .getAttribute("tubeCreateBindingModel");
 
-        this.tubeService
-                .saveTube(this.modelMapper.map(tubeCreateBindingModel, TubeServiceModel.class));
+        TubeServiceModel model = mapper.map(tubeCreateBindingModel, TubeServiceModel.class);
+
+        service.saveTube(model);
 
        resp.sendRedirect("/tubes/details?name=" + tubeCreateBindingModel.getName());
 
